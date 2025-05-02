@@ -1,0 +1,79 @@
+/* .todo-list li.completed label .description {
+  color: #cdcdcd;
+  text-decoration: line-through;
+}
+
+.todo-list li.editing .view {
+  display: none;
+}
+
+.todo-list li label .description {
+  word-break: break-all;
+  display: block;
+  line-height: 1.2;
+  transition: color 0.4s;
+  font-weight: 400;
+  color: #4d4d4d;
+}
+
+.todo-list li.completed label .description {
+  color: #cdcdcd;
+  text-decoration: line-through;
+}
+
+
+
+.todo-list li .icon {
+  position: absolute;
+  top: 0;
+  bottom: -3px;
+  width: 30px;
+  height: 40px;
+  font-size: 34px;
+  color: #cc9a9a;
+  margin: auto 0 11px;
+  transition: color 0.2s ease-out;
+  cursor: pointer;
+}
+
+.todo-list li .icon:hover {
+  color: #af5b5e;
+}
+
+.todo-list li .icon-destroy {
+  right: 10px;
+}
+
+.todo-list li .icon-destroy:after {
+  content: '×';
+}
+
+.todo-list li .icon-edit {
+  font-size: 19px;
+  right: 45px;
+}
+
+.todo-list li .icon-edit:after {
+  content: '✎';
+}
+
+.edit {
+  position: relative;
+  margin: 0;
+  width: 100%;
+  font-size: 24px;
+  font-family: inherit;
+  font-weight: inherit;
+  line-height: 1.4em;
+  color: inherit;
+  padding: 6px;
+  border: 1px solid #999;
+  box-shadow: inset 0 -1px 5px 0 rgba(0, 0, 0, 0.2);
+  box-sizing: border-box;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+} */
+.todo-list li label .created {
+  font-size: 13px;
+  color: gray;
+}
