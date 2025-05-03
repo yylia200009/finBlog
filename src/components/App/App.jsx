@@ -5,21 +5,10 @@ import Footer from '../Footer/Footer'
 import './app.css'
 
 export default class App extends React.Component {
-  maxId = 4
+  maxId = 1
 
   state = {
-    todos: [
-      {
-        label: 'Task 1',
-        done: false,
-        id: 1,
-        timer: {
-          minutes: 5,
-          seconds: 0,
-          isRunning: false,
-        },
-      },
-    ],
+    todos: [],
     filter: 'All',
   }
 
@@ -44,7 +33,8 @@ export default class App extends React.Component {
                 return {
                   ...task,
                   timer: {
-                    ...task.timer,
+                    minutes: task.min,
+                    seconds: task.sec,
                     isRunning: false,
                   },
                 }
