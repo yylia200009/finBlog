@@ -1,0 +1,64 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Yuji+Mai&display=swap');
+
+.header {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  justify-content: space-between;
+  padding: 9px;
+  padding-right: 20px;
+  padding-left: 20px;
+  background-color: rgba(255, 255, 255, 1);
+  margin-bottom: 12px;
+
+  .nameTitle {
+    background-color: rgba(255, 255, 255, 1);
+    text-decoration: none;
+
+    a {
+      color: black;
+
+      font-family: 'Inter', sans-serif;
+      font-weight: 400;
+      font-size: 24px;
+      line-height: 28px;
+      letter-spacing: 0%;
+      vertical-align: middle;
+      background-color: rgba(255, 255, 255, 1);
+      text-decoration: none;
+    }
+  }
+  .loginWrap {
+    display: flex;
+    flex-direction: row;
+    gap: 16px;
+    background-color: rgba(255, 255, 255, 1);
+    justify-content: center;
+    align-items: center;
+    button {
+      font-family: 'Inter', sans-serif;
+      font-weight: 400;
+      font-size: 18px;
+      line-height: 28px;
+      letter-spacing: 0%;
+      vertical-align: middle;
+      background-color: rgba(255, 255, 255, 1);
+    }
+    .in {
+      border: none;
+    }
+    .up {
+      color: rgba(82, 196, 26, 1);
+      border: 1px solid rgba(82, 196, 26, 1);
+      border-radius: 5px;
+      padding: 5px;
+    }
+    .out {
+      border: 1px solid rgba(0, 0, 0, 0.75);
+      border-radius: 5px;
+      padding: 5px;
+      padding-left: 12px;
+      padding-right: 12px;
+    }
+  }
+}

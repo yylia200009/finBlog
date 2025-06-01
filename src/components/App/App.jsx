@@ -1,259 +1,91 @@
-import React from 'react'
-import NewTaskForm from '../NewTaskForm/NewTaskForm'
-import TaskList from '../TaskList/TaskList'
-import Footer from '../Footer/Footer'
+import React, { Suspense } from 'react'
+import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom'
+import Header from '../header/Header'
+import Posts from '../posts/Posts'
 import './app.css'
+import SinglePost from '../singlePost/SinglePost'
+import { PaginationProvider } from '../pagination/paginationContext'
+import SignUp from '../login/signup/SignUp'
+import SignIn from '../login/signIn/SignIn'
+import CreateAccount from '../login/editAccount/EditAccount'
+import EditAccount from '../login/editAccount/EditAccount'
+import { AuthProvider } from '../context/DataContext'
+import Loading from '../UI/Loading'
+import CreateArticle from '../createArticle/CreateArticle'
+import EditArticle from '../editArticle/EditArticle'
 
-export default class App extends React.Component {
-  maxId = 1
+// const SignUp = lazy(() => import('../login/signup/SignUp'))
+// const SignIn = lazy(() => import('../login/signIn/SignIn'))
+// const EditAccount = lazy(() => import('../login/editAccount/EditAccount'))
+// const CreateArticle = lazy(() => import('../createArticle/CreateArticle'))
+// const EditArticle = lazy(() => import('../editArticle/EditArticle'))
 
-  state = {
-    todos: [],
-    filter: 'All',
-  }
-
-  startTimer = (id) => {
-    if (this.timers && this.timers[id]) {
-      clearInterval(this.timers[id])
-    }
-
-    if (!this.timers) {
-      this.timers = {}
-    }
-
-    this.timers[id] = setInterval(() => {
-      this.setState((prevState) => {
-        const updatedTodos = prevState.todos.map((task) => {
-          if (task.id === id && task.timer.isRunning) {
-            let { minutes, seconds } = task.timer
-
-            if (seconds === 0) {
-              if (minutes === 0) {
-                clearInterval(this.timers[id])
-                return {
-                  ...task,
-                  timer: {
-                    minutes: task.min,
-                    seconds: task.sec,
-                    isRunning: false,
-                  },
-                }
-              }
-              minutes--
-              seconds = 59
-            } else {
-              seconds--
-            }
-
-            return {
-              ...task,
-              timer: {
-                minutes,
-                seconds,
-                isRunning: true,
-              },
-            }
-          }
-          return task
-        })
-
-        return { todos: updatedTodos }
-      })
-    }, 1000)
-  }
-
-  handlePlay = (id) => {
-    this.setState(
-      (prev) => ({
-        todos: prev.todos.map((task) =>
-          task.id === id
-            ? {
-                ...task,
-                timer: {
-                  ...task.timer,
-                  isRunning: true,
-                },
-              }
-            : task
-        ),
-      }),
-      () => {
-        this.startTimer(id)
-      }
-    )
-  }
-
-  handlePause = (id) => {
-    this.setState((prev) => ({
-      todos: prev.todos.map((task) =>
-        task.id === id
-          ? {
-              ...task,
-              timer: {
-                ...task.timer,
-                isRunning: false,
-              },
-            }
-          : task
-      ),
-    }))
-  }
-
-  createTask = (label, min = 0, sec = 0) => {
-    return {
-      label,
-      done: false,
-      id: this.maxId++,
-      min: Number(min),
-      sec: Number(sec),
-      timer: {
-        minutes: Number(min),
-        seconds: Number(sec),
-        isRunning: false,
-      },
-    }
-  }
-  componentWillUnmount() {
-    Object.values(this.timers).forEach((timer) => clearInterval(timer))
-  }
-  changeTask = (id, newLabel) => {
-    this.setState(({ todos }) => ({
-      todos: todos.map((todo) => (todo.id === id ? { ...todo, label: newLabel } : todo)),
-    }))
-  }
-
-  toggleDone = (id) => {
-    this.setState(({ todos }) => ({
-      todos: todos.map((todo) => {
-        if (todo.id === id) {
-          if (this.timers && this.timers[id]) {
-            clearInterval(this.timers[id])
-            delete this.timers[id]
-          }
-
-          return {
-            ...todo,
-            done: !todo.done,
-            timer: todo.done
-              ? todo.timer
-              : {
-                  minutes: 0,
-                  seconds: 0,
-                  isRunning: false,
-                },
-          }
-        }
-        return todo
-      }),
-    }))
-  }
-  deleteItem = (id) => {
-    this.setState(({ todos }) => ({
-      todos: todos.filter((todo) => todo.id !== id),
-    }))
-  }
-
-  handleFilterClick = (selectedFilter) => {
-    this.setState({ filter: selectedFilter })
-  }
-
-  clearCompleted = () => {
-    this.setState(({ todos }) => ({
-      todos: todos.filter((todo) => !todo.done),
-    }))
-  }
-  doneCount = () => {
-    return this.state.todos.filter((el) => !el.done).length
-  }
-
-  addTask = (text, min, sec) => {
-    const newItem = this.createTask(text, min, sec)
-    this.setState(({ todos }) => {
-      const newArr = [...todos, newItem]
-
-      return { todos: newArr }
-    })
-  }
-
-  onCompleted = (id) => {
-    this.setState(({ todos }) => {
-      if (this.timers && this.timers[id]) {
-        clearInterval(this.timers[id])
-        delete this.timers[id]
-      }
-
-      const idx = todos.findIndex((el) => el.id === id)
-      const oldItem = todos[idx]
-
-      const newItem = {
-        ...oldItem,
-        done: !oldItem.done,
-        timer: {
-          minutes: 0,
-          seconds: 0,
-          isRunning: false,
-        },
-      }
-
-      return {
-        todos: [...todos.slice(0, idx), newItem, ...todos.slice(idx + 1)],
-      }
-    })
-  }
-
-  handleFilterChange = (filter) => {
-    this.setState({ filter })
-  }
-  getFilteredTodos() {
-    const { todos, filter } = this.state
-    if (filter === 'All') return todos
-    return todos.filter((task) => (filter === 'Active' ? !task.done : task.done))
-  }
-
-  updateTimer = (id, timerData) => {
-    this.setState((prev) => ({
-      todos: prev.todos.map((task) => (task.id === id ? { ...task, timer: timerData } : task)),
-    }))
-  }
-
-  shouldComponentUpdate = (nextProps, nextState) => {
-    return this.state.todos !== nextState.todos || this.state.filter !== nextState.filter
-  }
-
-  render() {
-    const { filter } = this.state
-    const filteredTodos = this.getFilteredTodos()
-
-    const todoFilter = [
-      { filter: 'All', selected: filter === 'All', id: 1 },
-      { filter: 'Active', selected: filter === 'Active', id: 2 },
-      { filter: 'Completed', selected: filter === 'Completed', id: 3 },
-    ]
-
-    return (
-      <section className="todoapp">
-        <header className="header">
-          <h1>todos</h1>
-          <NewTaskForm onItemAdded={this.addTask} />
-        </header>
-        <section className="main">
-          <TaskList
-            todos={filteredTodos}
-            onToggleDone={this.toggleDone}
-            onDeleted={this.deleteItem}
-            handleEdit={this.changeTask}
-            onPlay={this.handlePlay}
-            onPause={this.handlePause}
-          />
-
-          <Footer
-            filters={todoFilter}
-            onFilterClick={this.handleFilterClick}
-            onClearCompleted={this.clearCompleted}
-            doneCount={this.doneCount}
-          />
-        </section>
-      </section>
-    )
-  }
+function App() {
+  return (
+    <BrowserRouter>
+      <PaginationProvider>
+        <AuthProvider>
+          <div className="app">
+            <Header />
+            <Suspense fallback={<Loading />}>
+              <Routes>
+                <Route path="/" element={<Posts />} />
+                <Route path="/articles/:slug" element={<SinglePost />} />
+                {/* <Route path="/articles/:slug/edit" element={<EditArticle />} /> */}
+                <Route path="/articles" element={<Posts />} />
+                {/* <Route path="/sign-up" element={<SignUp />} /> */}
+                <Route
+                  path="/articles/:slug/edit"
+                  element={
+                    <Suspense fallback={<Loading />}>
+                      <EditArticle />
+                    </Suspense>
+                  }
+                />
+                <Route
+                  path="/sign-up"
+                  element={
+                    <Suspense fallback={<Loading />}>
+                      <SignUp />
+                    </Suspense>
+                  }
+                />
+                <Route
+                  path="/sign-in"
+                  element={
+                    <Suspense fallback={<Loading />}>
+                      <SignIn />
+                    </Suspense>
+                  }
+                />
+                <Route
+                  path="/profile"
+                  element={
+                    <Suspense fallback={<Loading />}>
+                      <EditAccount />
+                    </Suspense>
+                  }
+                />
+                <Route
+                  path="/profile"
+                  element={
+                    <Suspense fallback={<Loading />}>
+                      <CreateAccount />
+                    </Suspense>
+                  }
+                />
+                {/* <Route path="/sign-in" element={<SignIn />} /> */}
+                {/* <Route path="/profile" element={<EditAccount />} /> */}
+                {/* <Route path="/profile" element={<CreateAccount />} /> */}
+                <Route path="/new-article" element={<CreateArticle />} />
+                <Route path="*" element={<Navigate to="/" replace />} />
+              </Routes>
+            </Suspense>
+          </div>
+        </AuthProvider>
+      </PaginationProvider>
+    </BrowserRouter>
+  )
 }
+
+export default App

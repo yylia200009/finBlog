@@ -1,0 +1,18 @@
+a {
+  text-decoration: none;
+
+  button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+
+    .userAvatar {
+      width: 46px;
+      height: 46px;
+      border-radius: 50%;
+      margin-left: 8px;
+      object-fit: cover;
+    }
+  }
+}

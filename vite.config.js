@@ -9,6 +9,12 @@ export default defineConfig({
       },
     }),
   ],
+  build: {
+    chunkSizeWarningLimit: 1500, // Увеличиваем лимит предупреждений
+    rollupOptions: {
+      external: ['react-redux', '@reduxjs/toolkit'],
+    },
+  },
   optimizeDeps: {
     esbuildOptions: {
       target: 'es2020',

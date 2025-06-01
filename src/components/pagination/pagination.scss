@@ -1,0 +1,29 @@
+// pagination.scss
+.pag {
+  padding: 16px 0;
+
+  .ant-pagination {
+    &-item {
+      background: none !important;
+      border-color: rgba(255, 255, 255, 0.3) !important;
+
+      &-active {
+        background: rgba(24, 144, 255, 1) !important; // Красный с прозрачностью
+        border-color: rgba(24, 144, 255, 1) !important;
+
+        a {
+          color: white !important;
+        }
+      }
+
+      &:hover {
+      }
+    }
+
+    &-prev,
+    &-next {
+      .ant-pagination-item-link {
+      }
+    }
+  }
+}
