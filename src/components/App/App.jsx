@@ -1,5 +1,5 @@
 import React, { Suspense } from 'react'
-import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom'
+import { HashRouter, Route, Routes, Navigate } from 'react-router-dom'
 import Header from '../header/Header'
 import Posts from '../posts/Posts'
 import './app.css'
@@ -22,7 +22,7 @@ import EditArticle from '../editArticle/EditArticle'
 
 function App() {
   return (
-    <BrowserRouter>
+    <HashRouter>
       <PaginationProvider>
         <AuthProvider>
           <div className="app">
@@ -84,7 +84,7 @@ function App() {
           </div>
         </AuthProvider>
       </PaginationProvider>
-    </BrowserRouter>
+    </HashRouter>
   )
 }
 
